@@ -1,63 +1,24 @@
-import dataclasses
+
 from typing import Dict, Optional
 
-from .http_layer import get_all_airplane_status, process_airplane
-from .image_process import read_b64_img
-
-
-@dataclasses.dataclass()
-class AirplaneFlyStatus(object):
-    landing: bool
-    isStop: bool
-    x: float
-    y: float
-    h: float
-    rX: float
-    rY: float
-    rZ: float
-    pass
-
-
-def make_AirplaneFlyStatus(
-        fly_status: Dict[str, any]
-):
-    return AirplaneFlyStatus(
-        landing=fly_status['landing'],
-        isStop=fly_status['isStop'],
-        x=fly_status['x'],
-        y=fly_status['y'],
-        h=fly_status['h'],
-        rX=fly_status['rX'],
-        rY=fly_status['rY'],
-        rZ=fly_status['rZ'],
-    )
-    pass
-
-
-@dataclasses.dataclass()
-class Airplane(object):
-    keyName: str
-    typeName: str
-    updateTimestamp: int
-    status: AirplaneFlyStatus
-    cameraFront: str
-    cameraDown: str
-
-    def get_camera_front_img(self):
-        return read_b64_img(self.cameraFront)
-        pass
-
-    def get_camera_down_img(self):
-        return read_b64_img(self.cameraDown)
-        pass
-
-    pass
+from .airplane_core import make_AirplaneFlyStatus
+from .control_command import AirplaneController
+from .http_layer import get_all_airplane_status, process_airplane, ping, ping_volatile, start
 
 
 class AirplaneManager(object):
-    airplanes_table: Dict[str, Airplane] = {}
+    airplanes_table: Dict[str, AirplaneController] = {}
 
-    def get_airplane(self, id: str) -> Optional[Airplane]:
+    def ping(self):
+        return ping()
+
+    def ping_volatile(self):
+        return ping_volatile()
+
+    def start(self):
+        return start()
+
+    def get_airplane(self, id: str) -> Optional[AirplaneController]:
         return self.airplanes_table.get(id)
         pass
 
@@ -68,7 +29,7 @@ class AirplaneManager(object):
             for k, status in airplane_status.items():
                 # print('k', k)
                 if self.airplanes_table.get(k) is None:
-                    self.airplanes_table[k] = Airplane(
+                    self.airplanes_table[k] = AirplaneController(
                         keyName=status['keyName'],
                         typeName=status['typeName'],
                         updateTimestamp=status['updateTimestamp'],
@@ -77,7 +38,7 @@ class AirplaneManager(object):
                         cameraDown=status['cameraDown'],
                     )
                 else:
-                    a: Airplane = self.airplanes_table.get(k)
+                    a: AirplaneController = self.airplanes_table.get(k)
                     a.keyName = status['keyName']
                     a.typeName = status['typeName']
                     a.updateTimestamp = status['updateTimestamp']

@@ -8,6 +8,12 @@ from .config import remote_location
 
 def ping():
     return send_cmd('ping')
+def ping_volatile():
+    return send_cmd_volatile('ping')
+
+
+def start():
+    return send_cmd_volatile('start')
 
 
 def send_cmd(s: str):
