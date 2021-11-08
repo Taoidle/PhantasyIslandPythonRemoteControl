@@ -2,20 +2,29 @@ from typing import Dict
 
 import requests
 import json
-import cv2
 
 from .config import remote_location
-from .image_process import read_b64_img
 
 
 def ping():
-    r = requests.get('http://' + remote_location + '/ECU_HTTP/sendStringCmd?c=ping')
+    return send_cmd('ping')
+
+
+def send_cmd(s: str):
+    r = requests.get('http://' + remote_location + '/ECU_HTTP/sendStringCmd?c=' + s)
     print(r.status_code)
     print(r.text)
     return r.text
 
 
-def getAllAirplaneStatus():
+def send_cmd_volatile(s: str):
+    r = requests.get('http://' + remote_location + '/ECU_HTTP/sendStringCmd?cc=' + s)
+    print(r.status_code)
+    print(r.text)
+    return r.text
+
+
+def get_all_airplane_status():
     r = requests.get('http://' + remote_location + '/ECU_HTTP/getAllAirplaneStatus')
     # print(r.status_code)
     j = json.loads(r.text)

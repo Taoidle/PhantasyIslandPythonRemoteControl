@@ -1,7 +1,7 @@
 import dataclasses
 from typing import Dict, Optional
 
-from .http_layer import getAllAirplaneStatus, process_airplane
+from .http_layer import get_all_airplane_status, process_airplane
 from .image_process import read_b64_img
 
 
@@ -62,7 +62,7 @@ class AirplaneManager(object):
         pass
 
     def flush(self):
-        airplane_status: Dict[str, Dict[str, any]] = process_airplane(getAllAirplaneStatus())
+        airplane_status: Dict[str, Dict[str, any]] = process_airplane(get_all_airplane_status())
         if airplane_status is not None:
             # print('airplane_status', airplane_status)
             for k, status in airplane_status.items():
