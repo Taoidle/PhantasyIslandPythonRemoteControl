@@ -6,7 +6,7 @@ class AirplaneController(AirplaneCore):
     count: int = 1
 
     def _next_count(self):
-        self.count = self.count * 2 + 1
+        self.count = self.count + 2
         return self.count
 
     def _prepare_command(self, command: str) -> str:
