@@ -1,10 +1,11 @@
 from cv2 import cv2
 
 from PhantasyIslandPythonRemoteControl import get_airplane_manager
+from PhantasyIslandPythonRemoteControl.airplane_manager import AirplaneManager
 from PhantasyIslandPythonRemoteControl.control_command import AirplaneController
 
 
-def keyPressEvent(k: int, a: AirplaneController, ):
+def keyPressEvent(k: int, a: AirplaneController, m: AirplaneManager, ):
     if k == -1:  # no press
         return
     elif k == 119:  # w
@@ -20,9 +21,9 @@ def keyPressEvent(k: int, a: AirplaneController, ):
         a.right(100)
         return
     elif k == 113:  # q
-        a.rotate(-90)
-    elif k == 101:  # e
         a.rotate(90)
+    elif k == 101:  # e
+        a.rotate(-90)
         return
     elif k == 114:  # r
         a.up(100)
@@ -35,12 +36,15 @@ def keyPressEvent(k: int, a: AirplaneController, ):
     elif k == 27:  # ESC
         a.land()
         return
+    elif k == 13:  # Enter
+        m.start()
+        return
 
     pass
 
 
 if __name__ == '__main__':
-    m = get_airplane_manager()
+    m: AirplaneManager = get_airplane_manager()
 
     # print('airplanes_table', m.airplanes_table)
 
@@ -59,7 +63,7 @@ if __name__ == '__main__':
         while True:
             cv2.imshow(f'{a.keyName} front', a.get_camera_front_img())
             cv2.imshow(f'{a.keyName} down', a.get_camera_down_img())
-            keyPressEvent(cv2.waitKey(50), a)
+            keyPressEvent(cv2.waitKey(50), a, m)
             m.flush()
         pass
 
