@@ -60,6 +60,8 @@ if __name__ == '__main__':
         cv2.namedWindow(f'{a.keyName} front', cv2.WINDOW_NORMAL)
         cv2.namedWindow(f'{a.keyName} down', cv2.WINDOW_NORMAL)
 
+        a.use_fast_mode(True)
+
         while True:
             cv2.imshow(f'{a.keyName} front', a.get_camera_front_img())
             cv2.imshow(f'{a.keyName} down', a.get_camera_down_img())
