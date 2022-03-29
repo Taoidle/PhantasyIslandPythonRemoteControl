@@ -1,9 +1,19 @@
 from .airplane_core import AirplaneCore
-from .http_layer import send_cmd
+from .http_layer import send_cmd, send_cmd_volatile
 
 
 class AirplaneController(AirplaneCore):
     count: int = 1
+
+    _send_cmd_fn = staticmethod(send_cmd)
+
+    def use_fast_mode(self, enable=True):
+        if enable:
+            # https://stackoverflow.com/questions/55527175/how-do-i-remove-implicit-passing-of-self-in-python-class
+            _send_cmd_fn = staticmethod(send_cmd_volatile)
+        else:
+            _send_cmd_fn = staticmethod(send_cmd)
+        pass
 
     def _next_count(self):
         self.count = self.count + 2
@@ -13,7 +23,8 @@ class AirplaneController(AirplaneCore):
         return self.keyName + ' ' + str(self._next_count()) + ' ' + command
 
     def _send_cmd(self, command: str) -> str:
-        return send_cmd(self._prepare_command(command))
+        f = self._send_cmd_fn
+        return f(self._prepare_command(command))
 
     def takeoff(self, high: int):
         """
