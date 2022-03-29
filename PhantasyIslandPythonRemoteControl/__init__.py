@@ -1,1 +1,2 @@
-from .airplane_manager import AirplaneManager
+from .airplane_manager import get_airplane_manager
+
