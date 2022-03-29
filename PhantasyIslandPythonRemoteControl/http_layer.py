@@ -8,6 +8,8 @@ from .config import remote_location
 
 def ping():
     return send_cmd('ping')
+
+
 def ping_volatile():
     return send_cmd_volatile('ping')
 
@@ -17,21 +19,32 @@ def start():
 
 
 def send_cmd(s: str):
-    r = requests.get('http://' + remote_location + '/ECU_HTTP/sendStringCmd?c=' + s)
-    print(r.status_code)
-    print(r.text)
-    return r.text
+    try:
+        r = requests.get('http://' + remote_location + '/ECU_HTTP/sendStringCmd?c=' + s, timeout=10)
+        print(r.status_code)
+        print(r.text)
+        j = json.loads(r.text)
+        print(j)
+        return (j['ok'], j['r'])
+    except requests.exceptions.ReadTimeout as e:
+        print('send_cmd ', s, ' ', 'Error Command Timeout')
+        return (False, 'Timeout')
 
 
 def send_cmd_volatile(s: str):
-    r = requests.get('http://' + remote_location + '/ECU_HTTP/sendStringCmd?cc=' + s)
-    print(r.status_code)
-    print(r.text)
-    return r.text
+    try:
+        r = requests.get('http://' + remote_location + '/ECU_HTTP/sendStringCmd?cc=' + s, timeout=10)
+        print(r.status_code)
+        print(r.text)
+        j = json.loads(r.text)
+        return (j['ok'], j['r'])
+    except requests.exceptions.ReadTimeout as e:
+        print('send_cmd_volatile ', s, ' ', 'Error Command Timeout')
+        return (False, 'Timeout')
 
 
 def get_all_airplane_status():
-    r = requests.get('http://' + remote_location + '/ECU_HTTP/getAllAirplaneStatus')
+    r = requests.get('http://' + remote_location + '/ECU_HTTP/getAllAirplaneStatus', timeout=5)
     # print(r.status_code)
     j = json.loads(r.text)
     return j
