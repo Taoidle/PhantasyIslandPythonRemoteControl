@@ -1,4 +1,5 @@
 from typing import Dict
+import sys
 
 import requests
 import json
@@ -29,6 +30,13 @@ def send_cmd(s: str):
     except requests.exceptions.ReadTimeout as e:
         print('send_cmd ', s, ' ', 'Error Command Timeout')
         return (False, 'Timeout')
+    except requests.exceptions.ConnectionError as e:
+        print('ConnectionError Cannot Connect to PhantasyIsland, Max retries exceeded.', file=sys.stderr)
+        try:
+            print('  ===>>>  ' + str(e.args[0].reason), file=sys.stderr)
+        except:
+            pass
+        return (False, 'ConnectionError Cannot Connect to PhantasyIsland')
 
 
 def send_cmd_volatile(s: str):
@@ -41,13 +49,32 @@ def send_cmd_volatile(s: str):
     except requests.exceptions.ReadTimeout as e:
         print('send_cmd_volatile ', s, ' ', 'Error Command Timeout')
         return (False, 'Timeout')
+    except requests.exceptions.ConnectionError as e:
+        print('ConnectionError Cannot Connect to PhantasyIsland, Max retries exceeded.', file=sys.stderr)
+        try:
+            print('  ===>>>  ' + str(e.args[0].reason), file=sys.stderr)
+        except:
+            pass
+        return (False, 'ConnectionError Cannot Connect to PhantasyIsland')
 
 
 def get_all_airplane_status():
-    r = requests.get('http://' + remote_location + '/ECU_HTTP/getAllAirplaneStatus', timeout=5)
-    # print(r.status_code)
-    j = json.loads(r.text)
-    return j
+    error = None
+    try:
+        r = requests.get('http://' + remote_location + '/ECU_HTTP/getAllAirplaneStatus', timeout=5)
+        # print(r.status_code)
+        j = json.loads(r.text)
+        return j
+    except requests.exceptions.ConnectionError as e:
+        print('ConnectionError Cannot Connect to PhantasyIsland, Max retries exceeded.', file=sys.stderr)
+        try:
+            print('  ===>>>  ' + str(e.args[0].reason), file=sys.stderr)
+        except:
+            print(e, file=sys.stderr)
+        error = e
+        pass
+    if error is not None:
+        raise Exception('ConnectionError Cannot Connect to PhantasyIsland, Max retries exceeded.')
 
 
 def process_airplane(j: Dict[str, any]):
