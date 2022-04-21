@@ -1,8 +1,8 @@
 from cv2 import cv2
 
-from PhantasyIslandPythonRemoteControl import get_airplane_manager
-from PhantasyIslandPythonRemoteControl.airplane_manager import AirplaneManager
-from PhantasyIslandPythonRemoteControl.control_command import AirplaneController
+from src.PhantasyIslandPythonRemoteControl import get_airplane_manager
+from src.PhantasyIslandPythonRemoteControl.airplane_manager import AirplaneManager
+from src.PhantasyIslandPythonRemoteControl.control_command import AirplaneController
 
 
 def keyPressEvent(k: int, a: AirplaneController, m: AirplaneManager, ):
@@ -52,7 +52,7 @@ if __name__ == '__main__':
 
     # print('airplanes_table', m.airplanes_table)
 
-    a: AirplaneController = m.get_airplane('COM3')
+    a: AirplaneController = m.get_airplane('COM5')
 
     print(m.start())
 
@@ -60,7 +60,7 @@ if __name__ == '__main__':
         cv2.namedWindow(f'{a.keyName} front', cv2.WINDOW_NORMAL)
         cv2.namedWindow(f'{a.keyName} down', cv2.WINDOW_NORMAL)
 
-        a.use_fast_mode(True)
+        a.use_fast_mode(False)
 
         while True:
             cv2.imshow(f'{a.keyName} front', a.get_camera_front_img())
