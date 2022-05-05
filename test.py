@@ -1,8 +1,30 @@
 from cv2 import cv2
 
+from multiprocessing import Process, Queue
+
 from src.PhantasyIslandPythonRemoteControl import get_airplane_manager
 from src.PhantasyIslandPythonRemoteControl.airplane_manager import AirplaneManager
 from src.PhantasyIslandPythonRemoteControl.control_command import AirplaneController
+
+Q = Queue()
+
+
+def process_recive_keyPressEvent(Q):
+    while True:
+        # (k: int, a: AirplaneController, m: AirplaneManager, )
+        (exit, k, a, m) = Q.get()
+        if exit is True:
+            break
+        keyPressEvent(k, a, m)
+    pass
+
+
+def process_call_keyPressEvent(k: int, a: AirplaneController, m: AirplaneManager, ):
+    Q.put((False, k, a, m))
+
+
+def process_exit_keyPressEvent():
+    Q.put((True, None, None, None))
 
 
 def keyPressEvent(k: int, a: AirplaneController, m: AirplaneManager, ):
@@ -62,10 +84,14 @@ if __name__ == '__main__':
 
         a.use_fast_mode(False)
 
+        p = Process(target=process_recive_keyPressEvent, args=(Q,))
+        p.start()
+
         while True:
             cv2.imshow(f'{a.keyName} front', a.get_camera_front_img())
             cv2.imshow(f'{a.keyName} down', a.get_camera_down_img())
-            keyPressEvent(cv2.waitKey(50), a, m)
+            # keyPressEvent(cv2.waitKey(50), a, m)
+            process_call_keyPressEvent(cv2.waitKey(50), a, m)
             m.flush()
         pass
 
