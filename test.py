@@ -6,8 +6,6 @@ from src.PhantasyIslandPythonRemoteControl import get_airplane_manager
 from src.PhantasyIslandPythonRemoteControl.airplane_manager import AirplaneManager
 from src.PhantasyIslandPythonRemoteControl.control_command import AirplaneController
 
-Q = Queue()
-
 
 def process_recive_keyPressEvent(Q):
     while True:
@@ -19,12 +17,33 @@ def process_recive_keyPressEvent(Q):
     pass
 
 
-def process_call_keyPressEvent(k: int, a: AirplaneController, m: AirplaneManager, ):
+def process_call_keyPressEvent(Q: Queue, k: int, a: AirplaneController, m: AirplaneManager, ):
     Q.put((False, k, a, m))
 
 
-def process_exit_keyPressEvent():
+def process_exit_keyPressEvent(Q: Queue):
     Q.put((True, None, None, None))
+
+
+def process_Show(port: str, m: AirplaneManager, ):
+    m.flush()
+    a: AirplaneController = m.get_airplane(port)
+    if a:
+        Q = Queue()
+        cv2.namedWindow(f'{a.keyName} front', cv2.WINDOW_NORMAL)
+        cv2.namedWindow(f'{a.keyName} down', cv2.WINDOW_NORMAL)
+        a.use_fast_mode(False)
+        p = Process(target=process_recive_keyPressEvent, args=(Q,))
+        p.start()
+        while True:
+            cv2.imshow(f'{a.keyName} front', a.get_camera_front_img())
+            cv2.imshow(f'{a.keyName} down', a.get_camera_down_img())
+            process_call_keyPressEvent(Q, cv2.waitKey(50), a, m)
+            m.flush()
+        pass
+    else:
+        print(f'port {port} get error')
+    pass
 
 
 def keyPressEvent(k: int, a: AirplaneController, m: AirplaneManager, ):
@@ -74,25 +93,12 @@ if __name__ == '__main__':
 
     # print('airplanes_table', m.airplanes_table)
 
-    a: AirplaneController = m.get_airplane('COM5')
-
     print(m.start())
 
-    if a:
-        cv2.namedWindow(f'{a.keyName} front', cv2.WINDOW_NORMAL)
-        cv2.namedWindow(f'{a.keyName} down', cv2.WINDOW_NORMAL)
-
-        a.use_fast_mode(False)
-
-        p = Process(target=process_recive_keyPressEvent, args=(Q,))
+    for port in ['COM3', 'COM4', 'COM5']:
+        p = Process(target=process_Show, args=(port, m,))
         p.start()
 
-        while True:
-            cv2.imshow(f'{a.keyName} front', a.get_camera_front_img())
-            cv2.imshow(f'{a.keyName} down', a.get_camera_down_img())
-            # keyPressEvent(cv2.waitKey(50), a, m)
-            process_call_keyPressEvent(cv2.waitKey(50), a, m)
-            m.flush()
-        pass
-
-    pass
+    # p = Process(target=process_Show, args=('COM3', m,))
+    # p.start()
+    # p.join()
