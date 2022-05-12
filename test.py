@@ -1,4 +1,6 @@
 from cv2 import cv2
+from typing import NamedTuple
+import collections
 
 from multiprocessing import Process, Queue
 
@@ -95,7 +97,50 @@ if __name__ == '__main__':
 
     print(m.start())
 
-    for port in ['COM3', 'COM4', 'COM5']:
+    m.flush()
+    # a: AirplaneController = m.get_airplane('COM3')
+    # print('ping', m.ping())
+    # print('ping', type(m.ping()))
+    # print('ping_volatile', m.ping_volatile())
+    # print('ping_volatile', type(m.ping_volatile()))
+    # print('start', m.start())
+    # print('start', type(m.start()))
+    # print('start', len(m.start()))
+    # print('start', m.start()[0])
+    # print('start', type(m.start()[1]))
+    # print('start....', (False, ''))
+    # print('start....', type((False, '')))
+    #
+    #
+    # class Te(NamedTuple):
+    #     ok: bool
+    #     r: str | None
+    #     m: str | None
+    #
+    #
+    # print('Te', Te(False, '', None))
+    # print('Te', type(Te(False, '', None)))
+    #
+    # TTe = collections.namedtuple('TTe', ['ok', 'r', 'm'])
+    # print('TTe', TTe(False, '', None))
+    # print('TTe', type(TTe(False, '', None)))
+    #
+    # print('ccc', type({
+    #     'ok': False,
+    #     'r': '',
+    #     'm': None,
+    # }))
+    # print('ccc', {
+    #     'ok': False,
+    #     'r': '',
+    #     'm': None,
+    # })
+
+    # m.ping()
+    # m.ping_volatile()
+    # m.start()
+
+    for port in ['COM3']:
         p = Process(target=process_Show, args=(port, m,))
         p.start()
 
