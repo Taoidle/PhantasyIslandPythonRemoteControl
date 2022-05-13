@@ -157,6 +157,12 @@ class AirplaneController(AirplaneCore):
         """
         return self._send_cmd(f"rainbow {r} {g} {b}")
 
+    def airplane_mode(self, mode: int):
+        """
+        :param mode
+        """
+        return self._send_cmd(f"airplane_mode {mode}")
+
     def stop(self):
         return self.hover()
 
