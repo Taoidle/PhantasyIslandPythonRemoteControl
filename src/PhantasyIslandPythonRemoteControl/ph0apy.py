@@ -5,6 +5,12 @@ from .airplane_manager import get_airplane_manager, AirplaneManager
 class FH0A:
     airs: AirplaneManager = get_airplane_manager()
 
+    def __init__(self):
+        self.airs.flush()
+        self.airs.start()
+        self.airs.flush()
+        pass
+
     def sleep(self, time):
         sleep(time)
         pass
@@ -86,7 +92,7 @@ class FH0A:
         self.p(port).rainbow(r, g, b)
 
     def mode(self, port: str, mode: int):
-        # self.p(port).airplane_mode(mode)
+        self.p(port).airplane_mode(mode)
         pass
 
     def color_detect(self, port: str, L_L: int, L_H: int, A_L: int, A_H: int, B_L: int, B_H: int):
