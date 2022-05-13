@@ -29,14 +29,16 @@ def send_cmd(s: str):
         return (j['ok'], j['r'])
     except requests.exceptions.ReadTimeout as e:
         print('send_cmd ', s, ' ', 'Error Command Timeout')
-        return (False, 'Timeout')
+        # return (False, 'Timeout')
+        return {'ok': False, 'r': 'Timeout'}
     except requests.exceptions.ConnectionError as e:
         print('ConnectionError Cannot Connect to PhantasyIsland, Max retries exceeded.', file=sys.stderr)
         try:
             print('  ===>>>  ' + str(e.args[0].reason), file=sys.stderr)
         except:
             pass
-        return (False, 'ConnectionError Cannot Connect to PhantasyIsland')
+        # return (False, 'ConnectionError Cannot Connect to PhantasyIsland')
+        return {'ok': False, 'r': 'ConnectionError Cannot Connect to PhantasyIsland'}
 
 
 def send_cmd_volatile(s: str):
@@ -48,14 +50,16 @@ def send_cmd_volatile(s: str):
         return (j['ok'], j['r'])
     except requests.exceptions.ReadTimeout as e:
         print('send_cmd_volatile ', s, ' ', 'Error Command Timeout')
-        return (False, 'Timeout')
+        # return (False, 'Timeout')
+        return {'ok': False, 'r': 'Timeout'}
     except requests.exceptions.ConnectionError as e:
         print('ConnectionError Cannot Connect to PhantasyIsland, Max retries exceeded.', file=sys.stderr)
         try:
             print('  ===>>>  ' + str(e.args[0].reason), file=sys.stderr)
         except:
             pass
-        return (False, 'ConnectionError Cannot Connect to PhantasyIsland')
+        # return (False, 'ConnectionError Cannot Connect to PhantasyIsland')
+        return {'ok': False, 'r': 'ConnectionError Cannot Connect to PhantasyIsland'}
 
 
 def get_all_airplane_status():
