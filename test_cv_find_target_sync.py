@@ -145,7 +145,7 @@ if __name__ == '__main__':
                 # cv2.imshow("br_t", br_t)
                 count = cv2.countNonZero(br_t)
                 hor_flag = control_rotate(a, count)
-                print("count", count)
+                # print("count", count)
                 # print(br_t.shape)
                 if not hor_flag:
                     ver_flag = control_hor(a, count, br_t)
