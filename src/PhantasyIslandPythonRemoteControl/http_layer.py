@@ -16,6 +16,10 @@ def ping_volatile():
 
 
 def start():
+    return send_cmd('start')
+
+
+def start_volatile():
     return send_cmd_volatile('start')
 
 

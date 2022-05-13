@@ -1,9 +1,8 @@
-
 from typing import Dict, Optional
 
 from .airplane_core import make_AirplaneFlyStatus
 from .control_command import AirplaneController
-from .http_layer import get_all_airplane_status, process_airplane, ping, ping_volatile, start
+from .http_layer import get_all_airplane_status, process_airplane, ping, ping_volatile, start, start_volatile
 
 
 class AirplaneManager(object):
@@ -17,6 +16,9 @@ class AirplaneManager(object):
 
     def start(self):
         return start()
+
+    def start_volatile(self):
+        return start_volatile()
 
     def get_airplane(self, id: str) -> Optional[AirplaneController]:
         return self.airplanes_table.get(id)
