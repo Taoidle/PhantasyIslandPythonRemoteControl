@@ -1,4 +1,5 @@
 from typing import Dict, Optional
+from time import sleep
 
 from .airplane_core import make_AirplaneFlyStatus
 from .control_command import AirplaneController
@@ -22,6 +23,10 @@ class AirplaneManager(object):
 
     def get_airplane(self, id: str) -> Optional[AirplaneController]:
         return self.airplanes_table.get(id)
+        pass
+
+    def sleep(self, time):
+        sleep(time)
         pass
 
     def flush(self):

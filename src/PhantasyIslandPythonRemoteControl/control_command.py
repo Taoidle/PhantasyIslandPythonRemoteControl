@@ -26,6 +26,10 @@ class AirplaneController(AirplaneCore):
         f = self._send_cmd_fn
         return f(self._prepare_command(command))
 
+    def mode(self, mode: int):
+        self.airplane_mode(mode)
+        pass
+
     def takeoff(self, high: int):
         """
         takeoff函数用于控制无人机起飞
