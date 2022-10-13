@@ -1,4 +1,4 @@
-from cv2 import cv2
+import cv2
 from typing import NamedTuple
 import collections
 
@@ -30,6 +30,7 @@ def process_exit_keyPressEvent(Q: Queue):
 def process_Show(port: str, m: AirplaneManager, ):
     m.flush()
     a: AirplaneController = m.get_airplane(port)
+    a.status
     if a:
         Q = Queue()
         cv2.namedWindow(f'{a.keyName} front', cv2.WINDOW_NORMAL)
@@ -147,3 +148,6 @@ if __name__ == '__main__':
     # p = Process(target=process_Show, args=('COM3', m,))
     # p.start()
     # p.join()
+
+
+
