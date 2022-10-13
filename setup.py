@@ -22,7 +22,17 @@ setuptools.setup(
     },
     classifiers=[
     ],
-    install_requires=install_requires,
+    # install_requires=install_requires,
+    install_requires=[
+        'requests>=2.27.1',
+    ],
+    extras={
+        'numpy>=1.22.3',
+        "opencv-python>=4.5.5",
+        "opencv-contrib-python>=4.5.5",
+        "opencv-contrib-python-headless>=>=4.5.5",
+        "opencv-python-headless>=4.5.5",
+    },
     author='Jeremie',
     author_email='lucheng989898@protonmail.com',
     python_requires='>=3.8',
@@ -38,4 +48,3 @@ setuptools.setup(
 # https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html
 # pip install build
 # python -m build
-
