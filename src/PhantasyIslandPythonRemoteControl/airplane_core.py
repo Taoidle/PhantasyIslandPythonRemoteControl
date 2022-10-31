@@ -5,6 +5,9 @@ from .image_process import read_b64_img
 
 @dataclasses.dataclass()
 class AirplaneFlyStatus(object):
+    """
+    每个飞机的飞行状态
+    """
     landing: bool
     isStop: bool
     x: float
@@ -34,6 +37,9 @@ def make_AirplaneFlyStatus(
 
 @dataclasses.dataclass()
 class AirplaneCore(object):
+    """
+    每个飞机的基本信息
+    """
     keyName: str
     typeName: str
     updateTimestamp: int
@@ -42,10 +48,18 @@ class AirplaneCore(object):
     cameraDown: str
 
     def get_camera_front_img(self):
+        """
+        获取前置摄像头图像
+        :return:  cv::Mat
+        """
         return read_b64_img(self.cameraFront)
         pass
 
     def get_camera_down_img(self):
+        """
+        获取下置摄像头图像
+        :return:  cv::Mat
+        """
         return read_b64_img(self.cameraDown)
         pass
 

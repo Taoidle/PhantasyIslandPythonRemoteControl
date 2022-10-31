@@ -3,6 +3,9 @@ from .airplane_manager import get_airplane_manager, AirplaneManager
 
 
 class FH0A:
+    """
+    此类是到FH0A库的适配器，是对AirplaneManager的wrapper
+    """
     airs: AirplaneManager = get_airplane_manager()
 
     def __init__(self):

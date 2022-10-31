@@ -3,11 +3,20 @@ from .http_layer import send_cmd, send_cmd_volatile
 
 
 class AirplaneController(AirplaneCore):
+    """
+    无人机控制
+    此类包含控制单个无人机的所有指令
+    """
     count: int = 1
 
     _send_cmd_fn = staticmethod(send_cmd)
 
     def use_fast_mode(self, enable=True):
+        """
+        是否使用非阻塞模式
+        :param enable:
+        :return:
+        """
         if enable:
             # https://stackoverflow.com/questions/55527175/how-do-i-remove-implicit-passing-of-self-in-python-class
             _send_cmd_fn = staticmethod(send_cmd_volatile)
@@ -27,12 +36,17 @@ class AirplaneController(AirplaneCore):
         return f(self._prepare_command(command))
 
     def mode(self, mode: int):
+        """
+        控制无人机飞行模式
+        :param mode: 1,2,3,4
+        :return:
+        """
         self.airplane_mode(mode)
         pass
 
     def takeoff(self, high: int):
         """
-        takeoff函数用于控制无人机起飞
+        控制无人机起飞
         :param high: 起飞到指定高度
         :return:
         """
@@ -40,7 +54,7 @@ class AirplaneController(AirplaneCore):
 
     def land(self):
         """
-        land函数用于控制无人机降落
+        控制无人机降落
         """
         return self._send_cmd(f"land")
 
@@ -49,49 +63,49 @@ class AirplaneController(AirplaneCore):
 
     def up(self, distance: int):
         """
-        up 向上移动
+        向上移动
         :param distance:移动距离（厘米）
         """
         return self._send_cmd(f"up {distance}")
 
     def down(self, distance: int):
         """
-        down 向下移动
+        向下移动
         :param distance:移动距离（厘米）
         """
         return self._send_cmd(f"down {distance}")
 
     def forward(self, distance: int):
         """
-        forward 向前移动
+        向前移动
         :param distance:移动距离（厘米）
         """
         return self._send_cmd(f"forward {distance}")
 
     def back(self, distance: int):
         """
-        back 向后移动
+        向后移动
         :param distance:移动距离（厘米）
         """
         return self._send_cmd(f"back {distance}")
 
     def left(self, distance: int):
         """
-        left 向左移动
+        向左移动
         :param distance:移动距离（厘米）
         """
         return self._send_cmd(f"left {distance}")
 
     def right(self, distance: int):
         """
-        right 向右移动
+        向右移动
         :param distance:移动距离（厘米）
         """
         return self._send_cmd(f"right {distance}")
 
     def goto(self, x: int, y: int, h: int):
         """
-        goto 函数用于控制无人机到达指定位置
+        控制无人机到达指定位置
         :param x: x轴方向位置（厘米）
         :param y: y轴方向位置（厘米）
         :param h: 高度（厘米）
@@ -100,28 +114,28 @@ class AirplaneController(AirplaneCore):
 
     def rotate(self, degree: int):
         """
-        rotate函数用于控制无人机旋转
+        控制无人机旋转
         :param degree: 自转方向和角度（正数顺时针，负数逆时针，单位为度数）
         """
         return self._send_cmd(f"rotate {degree}")
 
     def cw(self, degree: int):
         """
-        cw 控制无人机顺时针自转
+        控制无人机顺时针自转
         :param degree: 自转角度度数
         """
         return self._send_cmd(f"cw {degree}")
 
     def ccw(self, degree: int):
         """
-        ccw 函数用于控制无人机逆时针自转
+        控制无人机逆时针自转
         :param degree: 自转角度度数
         """
         return self._send_cmd(f"ccw {degree}")
 
     def high(self, high: int):
         """
-        high用于控制无人机飞行高度
+        控制无人机飞行高度
         :param high: 飞行到指定高度
         :return:
         """
@@ -129,14 +143,14 @@ class AirplaneController(AirplaneCore):
 
     def speed(self, speed: int):
         """
-        speed函数用于控制无人机飞行速度
+        设置无人机飞行速度
         :param speed: 飞行速度（0-200厘米/秒）
         """
         return self._send_cmd(f"setSpeed {speed}")
 
     def led(self, r: int, g: int, b: int):
         """
-        led函数控制无人机灯光为指定颜色
+        控制无人机灯光为指定颜色
         :param r: 灯光颜色R通道
         :param g: 灯光颜色G通道
         :param b: 灯光颜色B通道
@@ -145,7 +159,7 @@ class AirplaneController(AirplaneCore):
 
     def bln(self, r: int, g: int, b: int):
         """
-        led函数控制无人机灯光，呼吸灯
+        控制无人机灯光，呼吸灯
         :param r: 灯光颜色R通道
         :param g: 灯光颜色G通道
         :param b: 灯光颜色B通道
@@ -154,7 +168,7 @@ class AirplaneController(AirplaneCore):
 
     def rainbow(self, r: int, g: int, b: int):
         """
-        led函数控制无人机灯光，七彩变换
+        控制无人机灯光，七彩变换
         :param r: 灯光颜色R通道
         :param g: 灯光颜色G通道
         :param b: 灯光颜色B通道
@@ -163,7 +177,9 @@ class AirplaneController(AirplaneCore):
 
     def airplane_mode(self, mode: int):
         """
-        :param mode
+        设置无人机飞行模式
+        :param mode: 1,2,3,4
+        :return:
         """
         return self._send_cmd(f"airplane_mode {mode}")
 
@@ -172,7 +188,7 @@ class AirplaneController(AirplaneCore):
 
     def hover(self):
         """
-        hover 函数用于控制无人机悬停
+        控制无人机悬停
         """
         return self._send_cmd(f"hover")
 

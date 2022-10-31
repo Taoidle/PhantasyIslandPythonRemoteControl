@@ -1,3 +1,6 @@
+"""
+这个文件是 PhantasyIslandPythonRemoteControl 库与仿真平台的核心通信协议部分
+"""
 from typing import Dict
 import sys
 
