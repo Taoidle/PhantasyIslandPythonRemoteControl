@@ -10,6 +10,15 @@ from src.PhantasyIslandPythonRemoteControl.control_command import AirplaneContro
 
 
 def process_recive_keyPressEvent(Q):
+    """
+    The process_recive_keyPressEvent function is a function that runs in a separate process.
+    It receives key presses from the main thread and sends them to the AirplaneController object.
+
+
+    :param Q: Send the key press event to the airplanecontroller
+    :return: A tuple containing a boolean value and two airplanecontroller objects
+    :doc-author: Jeremie
+    """
     while True:
         # (k: int, a: AirplaneController, m: AirplaneManager, )
         (exit, k, a, m) = Q.get()
@@ -20,14 +29,49 @@ def process_recive_keyPressEvent(Q):
 
 
 def process_call_keyPressEvent(Q: Queue, k: int, a: AirplaneController, m: AirplaneManager, ):
+    """
+    The process_call_keyPressEvent function is a function that takes in an integer key and a queue.
+    It run in main thread, then puts the key into the queue to be processed by another thread.
+
+    :param Q:Queue: Pass the queue to the process_call_keypressevent function
+    :param k:int: Get the key that was pressed
+    :param a:AirplaneController: Access the airplane controller
+    :param m:AirplaneManager: Access the airplanemanager object
+    :param : Pass the key pressed by the user to the airplanecontroller
+    :return: A tuple with the following values:
+    :doc-author: Jeremie
+    """
     Q.put((False, k, a, m))
 
 
 def process_exit_keyPressEvent(Q: Queue):
+    """
+    The process_exit_keyPressEvent function is a helper function that puts a tuple of three values into the queue.
+    The first value in the tuple indicates that the user has pressed 'q' to quit, and this process should be terminated.
+    The second value in the tuple is None, because we do not need any information from this event. The third and fourth
+    values are also None because they are not needed for this event.
+
+    :param Q:Queue: Pass the queue to the function
+    :return: A tuple containing a boolean, an integer, a string and an object
+    :doc-author: Jeremie
+    """
     Q.put((True, None, None, None))
 
 
 def process_Show(port: str, m: AirplaneManager, ):
+    """
+    The process_Show function is used to show the front and down camera of the airplane.
+    It will also record the key press event from user.
+    It's running in main thread.
+
+
+    :param port:str: Specify the port of the AirplaneController object
+    :param m:AirplaneManager: the AirplaneManager object
+    :param : Get the key pressed by user
+    :return: None
+    :doc-author: Jeremie
+    """
+
     m.flush()
     a: AirplaneController = m.get_airplane(port)
     a.status
@@ -50,6 +94,20 @@ def process_Show(port: str, m: AirplaneManager, ):
 
 
 def keyPressEvent(k: int, a: AirplaneController, m: AirplaneManager, ):
+    """
+    The keyPressEvent function is called whenever a key is pressed.
+    It takes two arguments: k, the key that was pressed, and a, the AirplaneController object.
+    The function then calls one of several functions in AirplaneController depending on which key was pressed.
+    It's running in main thread.
+
+    :param k:int: Get the key pressed by the user
+    :param a:AirplaneController:
+    :param m:AirplaneManager:
+    :param : Control the speed of the airplane
+    :return: The key that was pressed
+    :doc-author: Trelent
+    """
+
     if k == -1:  # no press
         return
     elif k == 119:  # w
@@ -88,6 +146,7 @@ def keyPressEvent(k: int, a: AirplaneController, m: AirplaneManager, ):
 
 
 if __name__ == '__main__':
+
     m: AirplaneManager = get_airplane_manager()
 
     # print('airplanes_table', m.airplanes_table)

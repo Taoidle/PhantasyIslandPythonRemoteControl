@@ -77,6 +77,14 @@ class AirplaneController(AirplaneCore):
 
     def forward(self, distance: int):
         """
+        The forward function moves the drone forward by a specified distance (meters).
+
+        :param self: Access variables that belongs to the class
+        :param distance:int: Specify the distance to move
+        :return: The string &quot;ok&quot; if the command was successful
+        :doc-author: Jeremie
+        """
+        """
         向前移动
         :param distance:移动距离（厘米）
         """

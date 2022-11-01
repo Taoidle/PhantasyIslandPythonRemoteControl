@@ -7,6 +7,15 @@ from src.PhantasyIslandPythonRemoteControl.control_command import AirplaneContro
 
 
 def control_rotate(a: AirplaneController, count: int):
+    """
+    The control_rotate function rotates the airplane by a specified number of degrees.
+    It returns True if it is able to rotate the airplane, and False otherwise.
+
+    :param a:AirplaneController: Pass the airplanecontroller object to the function
+    :param count:int: Determine how many Degree of rotate
+    :return: A boolean value , True if rotate ok, False if rotate failed
+    :doc-author: Jeremie
+    """
     if count <= 0:
         if a.rotate(1) is not None:
             # cv2.waitKey(10)
@@ -18,6 +27,20 @@ def control_rotate(a: AirplaneController, count: int):
 
 
 def control_hor(a: AirplaneController, count: int, h_img: np.array):
+    """
+    The control_hor function is a function that controls the airplane to fly horizontally.
+    The control_hor function takes in an AirplaneController object, an integer count and a numpy array h_img as its arguments.
+    If 0 &lt; count &lt; 600, then it will perform the following operations:
+        1) It will take out only the horizontal part of h_img using hor_project(h_img)[:, h_img.shape[0] - 2:] and store it in variable called h-count;
+        2) If 0 &lt; h-count &lt; 60, then for i from range(h-image.
+
+    :param a:AirplaneController: Control the airplane
+    :param count:int: Count the number of frames that have been processed
+    :param h_img:np.array: Pass the image to the function
+    :return: True if the airplane is in the middle of the screen and false otherwise
+    :doc-author: Trelent
+    """
+    """"""
     if 0 < count < 600:
         h_img = hor_project(h_img)[::, h_img.shape[1] - 2::]
         h_count = cv2.countNonZero(cv2.bitwise_not(h_img))
@@ -51,6 +74,17 @@ def control_hor(a: AirplaneController, count: int, h_img: np.array):
 
 
 def control_ver(a: AirplaneController, count: int, v_img: np.array):
+    """
+    The control_ver function is a function that controls the airplane to fly vertical.
+    The count is used to control when it starts and ends, and v_img is used for counting how many white pixels are in each column of the image.
+    If there are less than 70 white pixels in each column, then it will return False; otherwise, True.
+
+    :param a:AirplaneController: Control the airplane
+    :param count:int: Control the number of times that the function is called
+    :param v_img:np.array: Store the image of vertical lines
+    :return: True if the airplane is in the middle of the road
+    :doc-author: Trelent
+    """
     if 0 < count < 600:
         v_img = ver_project(v_img)[v_img.shape[0] - 2::, ::]
         v_count = cv2.countNonZero(cv2.bitwise_not(v_img))
@@ -81,6 +115,16 @@ def control_ver(a: AirplaneController, count: int, v_img: np.array):
 
 
 def control_forward(a: AirplaneController, count: int):
+    """
+    The control_forward function is used to control the drone forward.
+    It takes two arguments: a, which is an instance of AirplaneController class and count, which is an integer.
+    If 0 &lt; count &lt; 500 then it will move the drone forward by 5 meters and return True else False.
+
+    :param a:AirplaneController: Access the airplanecontroller class
+    :param count:int: Special the amount of meters the function can be called
+    :return: A boolean value
+    :doc-author: Trelent
+    """
     if 0 < count < 500:
         if a.forward(5) is not None:
             # cv2.waitKey(10)
@@ -90,6 +134,14 @@ def control_forward(a: AirplaneController, count: int):
 
 
 def hor_project(binary):
+    """
+    The hor_project function takes a binary image as input and returns an image with the horizontal projection of the input.
+
+
+    :param binary: Specify the input binary image
+    :return: A binary image with the horizontal projection of the input image
+    :doc-author: Jeremie
+    """
     h, w = binary.shape
     h_projection = np.zeros(binary.shape, dtype=np.uint8)
 
@@ -106,6 +158,15 @@ def hor_project(binary):
 
 
 def ver_project(binary):
+    """
+    The ver_project function takes in a binary image and returns a vertical projection of the image.
+    The vertical projection is an array that contains the number of white pixels in each column.
+
+
+    :param binary: Specify the image that is to be projected vertically
+    :return: A binary image with the vertical projection of the input image
+    :doc-author: Jeremie
+    """
     h, w = binary.shape
     v_projection = np.zeros(binary.shape, dtype=np.uint8)
 
@@ -122,7 +183,16 @@ def ver_project(binary):
     return v_projection
 
 
-if __name__ == '__main__':
+def main():
+    """
+    The main function of this module is to create an AirplaneManager object and
+    then call its start method.  The start method will initialize all the
+    airplanes, then it will enter a loop to move the airplanes.
+
+    :return: The airplanemanager object
+    :doc-author: Jeremie
+    """
+    """"""
     m: AirplaneManager = get_airplane_manager()
     m.flush()
     m.start()
@@ -160,4 +230,9 @@ if __name__ == '__main__':
             print(f'port {port} get error')
         pass
 
+    pass
+
+
+if __name__ == '__main__':
+    main()
     pass
