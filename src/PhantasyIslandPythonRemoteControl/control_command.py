@@ -59,6 +59,7 @@ class AirplaneController(AirplaneCore):
         return self._send_cmd(f"land")
 
     def emergency(self):
+        """停桨"""
         return self._send_cmd(f"emergency")
 
     def up(self, distance: int):
@@ -79,14 +80,13 @@ class AirplaneController(AirplaneCore):
         """
         The forward function moves the drone forward by a specified distance (meters).
 
+        向前移动
+        :param distance:移动距离（厘米）
+
         :param self: Access variables that belongs to the class
         :param distance:int: Specify the distance to move
         :return: The string &quot;ok&quot; if the command was successful
         :doc-author: Jeremie
-        """
-        """
-        向前移动
-        :param distance:移动距离（厘米）
         """
         return self._send_cmd(f"forward {distance}")
 
@@ -119,6 +119,37 @@ class AirplaneController(AirplaneCore):
         :param h: 高度（厘米）
         """
         return self._send_cmd(f"goto {x} {y} {h}")
+
+    def flip(self, direction: str):
+        """
+        flip函数用于控制无人机翻滚
+        :param direction: 翻滚方向（f前 b后 l左 r右）
+        """
+        return self._send_cmd(f"flip {direction} 1")
+
+    def flip_forward(self):
+        """向前做翻转（翻跟头）动作
+        """
+        self.flip("f")
+        pass
+
+    def flip_back(self):
+        """向后做翻转（翻跟头）动作
+        """
+        self.flip("b")
+        pass
+
+    def flip_left(self):
+        """向左做翻转（翻跟头）动作
+        """
+        self.flip("l")
+        pass
+
+    def flip_right(self):
+        """向右做翻转（翻跟头）动作
+        """
+        self.flip("r")
+        pass
 
     def rotate(self, degree: int):
         """
@@ -192,6 +223,9 @@ class AirplaneController(AirplaneCore):
         return self._send_cmd(f"airplane_mode {mode}")
 
     def stop(self):
+        """
+        控制无人机悬停
+        """
         return self.hover()
 
     def hover(self):
