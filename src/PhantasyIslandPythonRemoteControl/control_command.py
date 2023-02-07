@@ -1,5 +1,14 @@
 from .airplane_core import AirplaneCore
 from .http_layer import send_cmd, send_cmd_volatile
+from enum import Enum
+
+
+class AirplaneModeEnum(Enum):
+    """
+    无人机airplane_mode函数设置飞行模式指令
+    """
+    CommonMode = 1
+    MapMode = 4
 
 
 class AirplaneController(AirplaneCore):
@@ -214,10 +223,10 @@ class AirplaneController(AirplaneCore):
         """
         return self._send_cmd(f"rainbow {r} {g} {b}")
 
-    def airplane_mode(self, mode: int):
+    def airplane_mode(self, mode: AirplaneModeEnum):
         """
         设置无人机飞行模式
-        :param mode: 1,2,3,4
+        :param mode: AirplaneModeEnum 1,2,3,4
         :return:
         """
         return self._send_cmd(f"airplane_mode {mode}")
