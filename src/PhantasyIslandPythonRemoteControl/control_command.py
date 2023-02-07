@@ -44,7 +44,7 @@ class AirplaneController(AirplaneCore):
         f = self._send_cmd_fn
         return f(self._prepare_command(command))
 
-    def mode(self, mode: int):
+    def mode(self, mode: AirplaneModeEnum):
         """
         控制无人机飞行模式
         :param mode: 1,2,3,4
