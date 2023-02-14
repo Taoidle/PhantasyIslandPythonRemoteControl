@@ -2,7 +2,7 @@ from typing import Dict, Optional
 from time import sleep
 
 from .airplane_core import make_AirplaneFlyStatus
-from .control_command import AirplaneController
+from .control_command import AirplaneController, AirplaneControllerExtended
 from .http_layer import get_all_airplane_status, process_airplane, ping, ping_volatile, start, start_volatile
 
 
@@ -10,7 +10,7 @@ class AirplaneManager(object):
     """
     管理并更新所有飞机状态的管理器
     """
-    airplanes_table: Dict[str, AirplaneController] = {}
+    airplanes_table: Dict[str, AirplaneControllerExtended] = {}
 
     def ping(self):
         """
@@ -49,6 +49,34 @@ class AirplaneManager(object):
         return self.airplanes_table.get(id)
         pass
 
+    def get_airplane_extended(self, id: str) -> Optional[AirplaneControllerExtended]:
+        """
+        获取扩展飞机对象
+        这个函数获取的API在完全适配PhantasyIslandPythonRemoteControl的API基础上，添加了FH0A无人机特有功能API
+        :param keyName: 无人机的 keyName
+        :return: AirplaneController
+        """
+        return self.airplanes_table.get(id)
+        pass
+
+    # def get_airplane_extended_test(self, id: str) -> Optional[AirplaneControllerExtended]:
+    #     """
+    #     """
+    #     a = self.airplanes_table.get(id)
+    #     if a is not None:
+    #         return a
+    #     else:
+    #         self.airplanes_table[id] = AirplaneControllerExtended(
+    #             keyName='keyName',
+    #             typeName='typeName',
+    #             updateTimestamp='updateTimestamp',
+    #             status='status',
+    #             cameraFront='cameraFront',
+    #             cameraDown='cameraDown',
+    #         )
+    #         return self.airplanes_table.get(id)
+    #     pass
+
     def sleep(self, time):
         sleep(time)
         pass
@@ -63,7 +91,7 @@ class AirplaneManager(object):
             for k, status in airplane_status.items():
                 # print('k', k)
                 if self.airplanes_table.get(k) is None:
-                    self.airplanes_table[k] = AirplaneController(
+                    self.airplanes_table[k] = AirplaneControllerExtended(
                         keyName=status['keyName'],
                         typeName=status['typeName'],
                         updateTimestamp=status['updateTimestamp'],

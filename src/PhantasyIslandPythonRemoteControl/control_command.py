@@ -244,3 +244,26 @@ class AirplaneController(AirplaneCore):
         return self._send_cmd(f"hover")
 
     pass
+
+
+class AirplaneControllerExtended(AirplaneController):
+    """
+    无人机扩展控制类
+    此类为预留给各个实机接口库的适配类，
+    所有为特定实机而实现的接口库都应该将其所特有的功能实现在此扩展类中
+    """
+
+    def __getattr__(self, item):
+        """
+        此函数为方法拦截器，
+        用来拦截对此对象的不存在的函数的获取和调用，
+        为了对其他库实现的适配而存在
+        from https://stackoverflow.com/questions/14612442/how-to-handle-return-both-properties-and-functions-missing-in-a-python-class-u
+        """
+        def func(*arg, **kwargs):
+            print("AirplaneControllerExtended __getattr__ placement")
+            return None
+
+        return func
+
+    pass
